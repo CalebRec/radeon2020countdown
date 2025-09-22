@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Countdown to 4PM CDT</title>
+  <title>Radeon 2020</title>
   <style>
     body {
       background-color: red;
@@ -27,29 +27,22 @@
 <body>
   <div id="countdown">Loading...</div>
   <audio id="gribblyTrack" controls autoplay loop>
-    <source src="First Impression.mp3" type="audio/mpeg">
+    <source src="550e8400-e29b-41d4-a716-446655440000.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
 
   <script>
-    function getNext4PMCDT() {
-      const nowUTC = new Date();
-      const CDT_OFFSET = -5; // CDT is UTC-5 during daylight saving
-      const targetUTC = new Date(nowUTC);
-
-      targetUTC.setUTCHours(16 + CDT_OFFSET, 0, 0, 0); // 4PM CDT in UTC
-
-      if (nowUTC >= targetUTC) {
-        targetUTC.setUTCDate(targetUTC.getUTCDate() + 1); // Next day
-      }
-
-      return targetUTC;
-    }
+    // Target: Sept 22, 2025 at 4:00 PM CDT (UTC-5)
+    const targetUTC = Date.UTC(2025, 8, 22, 21, 0, 0); // Month is 0-indexed (8 = September), 21:00 UTC = 4PM CDT
 
     function updateCountdown() {
-      const now = new Date();
-      const target = getNext4PMCDT();
-      const diff = target - now;
+      const now = new Date().getTime();
+      const diff = targetUTC - now;
+
+      if (diff <= 0) {
+        document.getElementById('countdown').textContent = "00:00:00";
+        return;
+      }
 
       const hours = Math.floor(diff / 1000 / 60 / 60);
       const minutes = Math.floor((diff / 1000 / 60) % 60);
