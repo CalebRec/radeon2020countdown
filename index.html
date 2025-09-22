@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Countdown to 4PM CDT</title>
+  <style>
+    body {
+      background-color: red;
+      color: white;
+      font-family: 'Futura PT', 'Futura', sans-serif;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #countdown {
+      font-size: 5em;
+    }
+    audio {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="countdown">Loading...</div>
+  <audio id="gribblyTrack" controls autoplay loop>
+    <source src="First Impression.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    function getNext4PMCDT() {
+      const nowUTC = new Date();
+      const CDT_OFFSET = -5; // CDT is UTC-5 during daylight saving
+      const targetUTC = new Date(nowUTC);
+
+      targetUTC.setUTCHours(16 + CDT_OFFSET, 0, 0, 0); // 4PM CDT in UTC
+
+      if (nowUTC >= targetUTC) {
+        targetUTC.setUTCDate(targetUTC.getUTCDate() + 1); // Next day
+      }
+
+      return targetUTC;
+    }
+
+    function updateCountdown() {
+      const now = new Date();
+      const target = getNext4PMCDT();
+      const diff = target - now;
+
+      const hours = Math.floor(diff / 1000 / 60 / 60);
+      const minutes = Math.floor((diff / 1000 / 60) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('countdown').textContent =
+        `${hours.toString().padStart(2, '0')}:${minutes
+          .toString()
+          .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+</body>
+</html>
